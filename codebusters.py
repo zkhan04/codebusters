@@ -173,7 +173,7 @@ def hill_cipher(s, key, mode):
     # changes matrix into decryption matrix if in decrypt mode
     if mode == 'd':
         if(decryption_matrix(ik_arr) == False):
-            print("could not decrypt")
+            print("matrix not invertible")
             return 
         else:
             ikf_arr = decryption_matrix(ik_arr)
@@ -196,7 +196,7 @@ def decryption_matrix(key_matrix):
     # finds inverse determinant of matrix IF matrix is invertible; throws error otherwise
     det = ((key_matrix[1][1] * key_matrix[0][0]) - (key_matrix[0][1] * key_matrix[1][0])) % 26
     if det not in inverses:
-        print("decryption matrix could not be found")
+        print("could not decrypt")
         return False
     else:
         det_inv = inverses[det]
