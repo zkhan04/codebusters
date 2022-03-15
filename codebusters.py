@@ -20,6 +20,7 @@ def str_to_nums(s: str):
             i_arr.append(alphanumeric[b])
     return i_arr
 
+# finds all of the space indices in a string; makes it way easier to work with later
 def find_spaces(s: str):
     s_arr = list(s)
     spaces = []
@@ -28,6 +29,7 @@ def find_spaces(s: str):
             spaces.append(i)
     return spaces
 
+# adds spaces back into a string after it has been processed
 def add_spaces(s_arr: list, spaces: list):
     for space in spaces:
         s_arr.insert(space, ' ')
@@ -168,6 +170,7 @@ def hill_cipher(s, key, mode):
     else:
         ik_arr = [ik_temp[:3], ik_temp[3:6], ik_temp[6:]]
     
+    # changes matrix into decryption matrix if in decrypt mode
     if mode == 'd':
         if(decryption_matrix(ik_arr) == False):
             print("could not decrypt")
@@ -190,12 +193,15 @@ def hill_cipher(s, key, mode):
 # a: finding multiplicative inverse of determinant and 
 # b: finding the adjoint matrix
 def decryption_matrix(key_matrix):
+    # finds inverse determinant of matrix IF matrix is invertible; throws error otherwise
     det = ((key_matrix[1][1] * key_matrix[0][0]) - (key_matrix[0][1] * key_matrix[1][0])) % 26
     if det not in inverses:
         print("decryption matrix could not be found")
         return False
     else:
         det_inv = inverses[det]
+       
+    # creates adjoint matrix, multiplies by inverse determinant
     af = key_matrix[1][1] * det_inv % 26
     bf = (26 - key_matrix[0][1]) * det_inv % 26
     cf = (26 - key_matrix[1][0]) * det_inv % 26
