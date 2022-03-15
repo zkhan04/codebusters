@@ -2,7 +2,7 @@ import math
 # PART 0 // THE BUILDING BLOCKS
 
 # array, contains all of the letters of the alphabet
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+alphabet = [l for l in 'abcdefghijklmnopqrstuvwxyz']
 
 # a dictionary mapping each letter of the alphabet to its index (i.e a: 0, b: 1, c: 2) 
 # by using the alphabet array
