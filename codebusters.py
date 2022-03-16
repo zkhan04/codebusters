@@ -20,7 +20,6 @@ def str_to_nums(s: str):
             i_arr.append(alphanumeric[b])
     return i_arr
 
-# finds all of the space indices in a string; makes it way easier to work with later
 def find_spaces(s: str):
     s_arr = list(s)
     spaces = []
@@ -29,7 +28,6 @@ def find_spaces(s: str):
             spaces.append(i)
     return spaces
 
-# adds spaces back into a string after it has been processed
 def add_spaces(s_arr: list, spaces: list):
     for space in spaces:
         s_arr.insert(space, ' ')
@@ -47,12 +45,7 @@ def caesar_encrypt(s: str, i: int):
     spaces = find_spaces(s)
 
     # shifts indices, maps to respective letters, prints final output
-    caesar = []
-    for r in i_arr:
-        if r != ' ':
-            caesar.append(rev_alpha[(r + i) % 26])
-        else:
-            caesar.append(' ')
+    caesar = [rev_alpha[(r + i) % 26] for r in i_arr]
     print(add_spaces(caesar, spaces))
 
 # decrypts a string encrypted with caesar
@@ -71,12 +64,7 @@ def atbash_cipher(s: str):
     spaces = find_spaces(s)
 
     # encrypts and prints s
-    atbash = []
-    for r in i_arr:
-        if r != ' ':
-            atbash.append(rev_alpha[25 - r])
-        else:
-            atbash.append(' ')
+    atbash = [rev_alpha[25 - r] for r in i_arr]
     print(add_spaces(atbash, spaces))
 
 # PART 3: AFFINE CIPHER
@@ -88,12 +76,7 @@ def affine_encrypt(s: str, a: int, b: int):
     spaces = find_spaces(s)
 
     # performs affine cipher based on a, b and s then prints
-    affine = []
-    for r in i_arr:
-        if r != ' ':
-            affine.append(rev_alpha[(a * r + b) % 26])
-        else:
-            affine.append(' ')
+    affine = [rev_alpha[(a * r + b) % 26] for r in i_arr]
     print(add_spaces(affine, spaces))
 
 # decryption algorithm based on encryption key
@@ -105,12 +88,7 @@ def affine_decrypt(s: str, a: int, b: int):
     a = inverses[a]
 
     # decrypts and prints s
-    affine_r = []
-    for r in i_arr:
-        if r != ' ':
-            affine_r.append(rev_alpha[(a * (r - b)) % 26])
-        else:
-            affine_r.append(' ')
+    affine_r = [rev_alpha[(a * (r - b)) % 26] for r in i_arr]
     print(add_spaces(affine_r, spaces))
 
 # PART 4: VIGENERE CIPHER
@@ -126,11 +104,8 @@ def vigenere_encrypt(s: str, key: str):
     # the vigenere cipher is equivalent to (a + b) % 26 given that 
     # a and b are indices of the letters being used
     for r in i_arr:
-        if r != ' ':
-            vigenere.append(rev_alpha[(r + ik_arr[index % len(key)]) % 26])
-            index += 1
-        else:
-            vigenere.append(' ')
+        vigenere.append(rev_alpha[(r + ik_arr[index % len(key)]) % 26])
+        index += 1
     print(add_spaces(vigenere, spaces))
 
 # PART 5: HILL CIPHER (the annoying one)
@@ -170,10 +145,9 @@ def hill_cipher(s, key, mode):
     else:
         ik_arr = [ik_temp[:3], ik_temp[3:6], ik_temp[6:]]
     
-    # changes matrix into decryption matrix if in decrypt mode
     if mode == 'd':
         if(decryption_matrix(ik_arr) == False):
-            print("matrix not invertible")
+            print("could not decrypt")
             return 
         else:
             ikf_arr = decryption_matrix(ik_arr)
@@ -193,15 +167,12 @@ def hill_cipher(s, key, mode):
 # a: finding multiplicative inverse of determinant and 
 # b: finding the adjoint matrix
 def decryption_matrix(key_matrix):
-    # finds inverse determinant of matrix IF matrix is invertible; throws error otherwise
     det = ((key_matrix[1][1] * key_matrix[0][0]) - (key_matrix[0][1] * key_matrix[1][0])) % 26
     if det not in inverses:
-        print("could not decrypt")
+        print("matrix not invertible")
         return False
     else:
         det_inv = inverses[det]
-       
-    # creates adjoint matrix, multiplies by inverse determinant
     af = key_matrix[1][1] * det_inv % 26
     bf = (26 - key_matrix[0][1]) * det_inv % 26
     cf = (26 - key_matrix[1][0]) * det_inv % 26
