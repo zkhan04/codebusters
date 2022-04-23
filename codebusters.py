@@ -82,7 +82,7 @@ def affine_encrypt(s: str, a: int, b: int):
 # decryption algorithm based on encryption key
 def affine_decrypt(s: str, a: int, b: int):
     i_arr = str_to_nums(s)
-    spaces = str_to_nums(s)
+    spaces = find_spaces(s)
 
     # finds multiplicative inverse of a
     a = inverses[a]
